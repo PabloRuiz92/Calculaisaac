@@ -93,22 +93,23 @@ def elegir_personage():
 #Cambiar stats-----------------------
 #cada check tiene que estar asociado a un item y cada item tiene que cambiar un stat correspondiente
 #Los stats tendrian que estar asignados como [status, valor]
-
+"""
 def statUp():
-    item = dinnerCheck.cget("variable")
+    item = dinnerButton.cget("variable")
     #chara = "chara" + (cuadroNombre.get())
     if int(vidaEntry.get()) < 12:
         vidaEntry.set(item["vida"])
-
+"""
 
 
 def healtup():
-    item = dinnerCheck.cget("variable")
+    #item = dinnerButton.cget("variable")
+    """
     for valor in item:
         if valor == "vida":
             vidaEntry.set(int(vidaEntry.get()) + int(item[valor]))
-
-    if item == "dinner" and int(vidaEntry.get()) < 12:
+    """
+    if int(vidaEntry.get()) < 12:
         vidaEntry.set(int(vidaEntry.get()) + 1)
 
     #exec(""+ chara +".stat_up("+ item +")")
@@ -215,18 +216,16 @@ BBabyRadio.grid(row=0, column=5)
 frame3=Frame(root)
 frame3.grid()
 #crear una funcione que genere los botones a partir de una base de datos de items?
-#dinner2 = "dinner"
-
+"""
 dinnerCheck =Checkbutton(frame3, text="Dinner", variable = dinner["nombreItem"], command=healtup)
 dinnerCheck.grid(row=0, column=1)
 
 Checkbutton(frame3, text="<3").grid(row=0, column=2)
 Checkbutton(frame3, text="20/20").grid(row=0, column=3)
 Checkbutton(frame3, text="Aries").grid(row=0, column=4)
-
+"""
 img_boton = PhotoImage(file=(dinner["ruta"]))
-"""
-boton = Button(frame3, text="dinner", textvariable=dinner, image=img_boton)
-boton.grid(row=0, column=5)
-"""
+dinnerButton = Button(frame3, text="dinner", textvariable=dinner, image=img_boton, command=healtup)
+dinnerButton.grid(row=0, column=5)
+
 root.mainloop()
