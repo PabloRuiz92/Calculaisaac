@@ -2,6 +2,7 @@ from cProfile import label
 from tkinter import *
 from Characters import *
 from Items import *
+from math import pow
 
 class Application(Frame):
     def __init__(self, master):
@@ -23,7 +24,7 @@ class Application(Frame):
         self.vida=IntVar(value=0)
         self.damage=DoubleVar(value=0)
         self.tears=DoubleVar(value=0)
-        self.shotSpd=IntVar(value=0)
+        self.shotSpd=DoubleVar(value=0)
         self.rango=DoubleVar(value=0)
         self.speed=DoubleVar(value=0)
         self.luck=DoubleVar(value=0)
@@ -44,23 +45,29 @@ class Application(Frame):
             self.entry[stat].grid(row=stat+1, column=3)
 
         #Radiales de personaje--------------
-        self.frame_radiales_personaje=Frame(root)
+        self.frame_radiales_personaje=Frame(master)
         self.frame_radiales_personaje.grid()
 
         self.personaje=IntVar(value=0)
         self.personajes_lista =[Isaac,Madgalene,Cain,Judas,DarkJudas,BlueBaby,Eve,Samson]
         self.radio_personaje=[]
+        columna = 0
+        filas = 0
         for caracter in range(len(self.personajes_lista)):
             self.radio_personaje.append(Radiobutton(
                 self.frame_radiales_personaje, 
                 text=(self.personajes_lista[caracter]).nombre,
                 variable=self.personaje, 
-                value=caracter+1, 
+                value=caracter+1,
                 command=lambda: self.elegir_personage(self.personajes_lista[(self.personaje.get())-1])))
-            self.radio_personaje[caracter].grid(row=0, column=caracter+1, sticky="W")
+            self.radio_personaje[caracter].grid(row=filas, column=columna, sticky="W")
+            columna += 1
+            if columna > 4:
+                filas += 1
+                columna=0
 
         #Botones de Item--------------
-        self.frame_botones_item=Frame(root)
+        self.frame_botones_item=Frame(master)
         self.frame_botones_item.grid(column=0, row=7, columnspan=2)
 
         self.row_contador = 0
@@ -87,12 +94,15 @@ class Application(Frame):
         self.label_image.image = imagen_personaje
 
     def stat_up(self, item):
-        for valor in items[item]:
-            if valor in self.status_lista:
-                index = self.status_lista.index(valor)
+        for stat in items[item]:
+            if stat in self.status_lista:
+                index = self.status_lista.index(stat)
                 self.valor = self.variables_stat[index]
-                cambio=(self.valor.get()+items[item][valor])
-                self.valor.set(cambio)
+                cambio=(self.valor.get()+items[item][stat])
+                if stat == "vida":
+                    self.valor.set(cambio)
+                else:
+                    self.valor.set(f"{cambio:.2f}")
                 if self.vida.get() > 12:
                     self.vida.set(12)
                 if self.tears.get() > 120:

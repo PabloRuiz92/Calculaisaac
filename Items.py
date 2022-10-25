@@ -11,6 +11,12 @@ items={
         "vida": 3,
         "damage": 5,
         "ruta": "Items\Collectible_Aries_icon.png"
+    },
+    2 : {
+        "nombre": "Aries",
+        "vida": 3,
+        "damage": 5,
+        "ruta": "Items\Collectible_Aries_icon.png"
     }
 }
 
