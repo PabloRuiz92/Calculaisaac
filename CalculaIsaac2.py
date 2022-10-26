@@ -120,13 +120,22 @@ class Application(Frame):
                     self.valor.set(cambio)
                 else:
                     self.valor.set(f"{cambio:.3f}")
-                if self.vida.get() > 12:
-                    self.vida.set(12)
-                if self.tears.get() > 120:
-                    self.tears.set(120)
-                if self.speed.get() > 2.0:
-                    self.speed.set(2.0) 
-
+        self.comprobacion_max_min()
+                
+    def comprobacion_max_min(self):
+        if self.vida.get() > 12:
+            self.vida.set(12)
+        if self.tears.get() > 120:
+            self.tears.set(120)
+        if self.shotSpd.get() < 0.6:
+            self.shotSpd.set(0.6)
+        if self.rango.get() < 1.0:
+            self.rango.set(1.0)
+        if self.speed.get() > 2.0:
+            self.speed.set(2.0)
+        if self.speed.get() < 0.1:
+            self.speed.set(0.1)
+#["vidax","damageinf","tearsx","shotSpdx","rangox","speedx","luck"]
 #Main-------------------
 root=Tk()
 root.title("CalculaIssac")
