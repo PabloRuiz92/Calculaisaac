@@ -71,6 +71,7 @@ class Application(Frame):
         self.frame_botones_item.grid(column=0, row=7, columnspan=2)
 
         self.total_damage_ups = 0
+        self.flat_damage = 0
 
         self.row_contador = 0
         column_contador = 5
@@ -97,19 +98,24 @@ class Application(Frame):
         self.label_image.image = imagen_personaje
 
         self.total_damage_ups = 0
+        self.flat_damage = 0
 
 
 
     def stat_up(self, item):
+        personaje_elegido = self.personajes_lista[(self.personaje.get())-1]
         for stat in items[item]:
+            if stat == "flat":
+                self.flat_damage = items[item][stat]
+                cambio = self.damage.get() + self.flat_damage
+                self.damage.set(cambio)
             if stat in self.status_lista:
                 index = self.status_lista.index(stat)
                 self.valor = self.variables_stat[index]
                 cambio=(self.valor.get()+items[item][stat])
                 if stat == "damage":
                     self.total_damage_ups = self.total_damage_ups + items[item][stat]
-                    personaje_elegido = self.personajes_lista[(self.personaje.get())-1]
-                    cambio = (sqrt(self.total_damage_ups * 1.2 + 1))*float(personaje_elegido.__getattribute__("damage"))
+                    cambio = (sqrt(self.total_damage_ups * 1.2 + 1))*float(personaje_elegido.__getattribute__("damage"))+self.flat_damage
                 if stat == "vida":
                     self.valor.set(cambio)
                 else:
