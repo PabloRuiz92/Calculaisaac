@@ -125,6 +125,8 @@ class Application(Frame):
     def comprobacion_max_min(self):
         if self.vida.get() > 12:
             self.vida.set(12)
+        if self.vida.get() < 0:
+            self.vida.set(0)
         if self.tears.get() > 120:
             self.tears.set(120)
         if self.shotSpd.get() < 0.6:

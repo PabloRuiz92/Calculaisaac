@@ -6,7 +6,7 @@ items={
     },
     1 : {
         "nombre": "Aries",
-        "damage": 1,
+        "damage": 2,
         "ruta": "Items\Collectible_Aries_icon.png"
     },
     2 : {

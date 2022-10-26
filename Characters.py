@@ -1,6 +1,5 @@
 #Class Character
 from Items import *
-from math import pow
 
 class Character():
     def __init__(self, nombre, vida, mutiplicador, damage, tears, shotSpd, rango, speed, luck, imagen):
