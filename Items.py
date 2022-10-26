@@ -1,9 +1,7 @@
 items={
     0 : {
         "nombre": "Dinner",
-        "vida": 1,
-        "damage": 5.2,
-        "speed": 0.2,
+        "damage": 1,
         "ruta": "Items\Collectible_Dinner_icon.png"
     },
     1 : {

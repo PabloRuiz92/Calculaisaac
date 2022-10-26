@@ -2,7 +2,7 @@ from cProfile import label
 from tkinter import *
 from Characters import *
 from Items import *
-from math import pow
+from math import sqrt
 
 class Application(Frame):
     def __init__(self, master):
@@ -59,7 +59,7 @@ class Application(Frame):
                 text=(self.personajes_lista[caracter]).nombre,
                 variable=self.personaje, 
                 value=caracter+1,
-                command=lambda: self.elegir_personage(self.personajes_lista[(self.personaje.get())-1])))
+                command=lambda: self.elegir_personaje(self.personajes_lista[(self.personaje.get())-1])))
             self.radio_personaje[caracter].grid(row=filas, column=columna, sticky="W")
             columna += 1
             if columna > 4:
@@ -69,6 +69,8 @@ class Application(Frame):
         #Botones de Item--------------
         self.frame_botones_item=Frame(master)
         self.frame_botones_item.grid(column=0, row=7, columnspan=2)
+
+        self.total_damage_ups = 0
 
         self.row_contador = 0
         column_contador = 5
@@ -83,7 +85,8 @@ class Application(Frame):
             column_contador += 1
 
     #Metodos-------------------
-    def elegir_personage(self, personaje_elegido):
+
+    def elegir_personaje(self, personaje_elegido):
         self.personaje_selection.set(personaje_elegido.nombre)
         contador=0
         for i in self.variables_stat:
@@ -93,22 +96,30 @@ class Application(Frame):
         self.label_image.config(image=imagen_personaje)
         self.label_image.image = imagen_personaje
 
+        self.total_damage_ups = 0
+
+
+
     def stat_up(self, item):
         for stat in items[item]:
             if stat in self.status_lista:
                 index = self.status_lista.index(stat)
                 self.valor = self.variables_stat[index]
                 cambio=(self.valor.get()+items[item][stat])
+                if stat == "damage":
+                    self.total_damage_ups = self.total_damage_ups + items[item][stat]
+                    personaje_elegido = self.personajes_lista[(self.personaje.get())-1]
+                    cambio = (sqrt(self.total_damage_ups * 1.2 + 1))*float(personaje_elegido.__getattribute__("damage"))
                 if stat == "vida":
                     self.valor.set(cambio)
                 else:
-                    self.valor.set(f"{cambio:.2f}")
+                    self.valor.set(f"{cambio:.3f}")
                 if self.vida.get() > 12:
                     self.vida.set(12)
                 if self.tears.get() > 120:
                     self.tears.set(120)
                 if self.speed.get() > 2.0:
-                    self.speed.set(2.0)   
+                    self.speed.set(2.0) 
 
 #Main-------------------
 root=Tk()
