@@ -27,14 +27,15 @@ class Application(Frame):
 
         #Label y Entry stats-------------------
         self.vida=IntVar(value=0)
+        self.multiplicador=DoubleVar(value=0)
         self.damage=DoubleVar(value=0)
         self.tears=DoubleVar(value=0)
         self.shotSpd=DoubleVar(value=0)
         self.rango=DoubleVar(value=0)
         self.speed=DoubleVar(value=0)
         self.luck=DoubleVar(value=0)
-        self.variables_stat = [self.vida,self.damage,self.tears,self.shotSpd,self.rango,self.speed,self.luck]
-        self.status_lista =["vida","damage","tears","shotSpd","rango","speed","luck"]
+        self.variables_stat = [self.vida,self.multiplicador,self.damage,self.tears,self.shotSpd,self.rango,self.speed,self.luck]
+        self.status_lista =["vida","multiplicador","damage","tears","shotSpd","rango","speed","luck"]
         self.label_stat = []
         self.entry = []
 
@@ -93,8 +94,11 @@ class Application(Frame):
     def elegir_personaje(self, personaje_elegido):
         self.personaje_selection.set(personaje_elegido.nombre)
         contador=0
-        for i in self.variables_stat:
-            i.set(personaje_elegido.__getattribute__(self.status_lista[contador]))
+        for stat in self.variables_stat:
+            if contador == 2:
+                stat.set(f"{personaje_elegido.__getattribute__(self.status_lista[2])*personaje_elegido.__getattribute__(self.status_lista[1]):.2f}")
+            else:
+                stat.set(personaje_elegido.__getattribute__(self.status_lista[contador]))
             contador+=1
         imagen_personaje=PhotoImage(file=personaje_elegido.imagen)
         self.label_image.config(image=imagen_personaje)
@@ -109,7 +113,6 @@ class Application(Frame):
     def stat_up(self, item):
         personaje_elegido = self.personajes_lista[(self.personaje.get())-1]
         self.lista_items_conseguidos.append(items[item]["nombre"])
-        print(self.lista_items_conseguidos)
         for stat in items[item]:
             if stat == "flat":
                 self.flat_damage = items[item][stat]
@@ -121,16 +124,20 @@ class Application(Frame):
                 cambio=(self.valor.get()+items[item][stat])
                 if stat == "damage":
                     self.total_damage_ups = self.total_damage_ups + items[item][stat]
-                    cambio = (sqrt(self.total_damage_ups * 1.2 + 1))*float(personaje_elegido.__getattribute__("damage"))+self.flat_damage
+                    cambio = self.calculo_damage(personaje_elegido)
                 if stat == "vida":
                     self.valor.set(cambio)
                 else:
                     self.valor.set(f"{cambio:.3f}")
         self.comprobacion_max_min()
 
-    #Comprueba que los stats no sobrepasen el maximo o esten debajo del minimo.     
+    #metodo para calcular el damage, lo pongo aca para encontrarlo mas facil
+    def calculo_damage(self,personaje_elegido):
+        damage=(sqrt(self.total_damage_ups * 1.2 + 1))*float(personaje_elegido.__getattribute__("damage")*personaje_elegido.__getattribute__("multiplicador"))+self.flat_damage
+        return damage
+    
+    #Comprueba que los stats no sobrepasen el maximo o esten debajo del minimo.
     def comprobacion_max_min(self):
-        
         #Max/Min vida
         if self.vida.get() > 12:
             self.vida.set(12)

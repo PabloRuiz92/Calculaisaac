@@ -2,11 +2,11 @@
 from Items import *
 
 class Character():
-    def __init__(self, nombre, vida, mutiplicador, damage, tears, shotSpd, rango, speed, luck, imagen):
+    def __init__(self, nombre, vida, multiplicador, damage, tears, shotSpd, rango, speed, luck, imagen):
         self.nombre = nombre
         self.vida= vida
-        self.mutiplicador = mutiplicador
-        self.damage = f"{damage*self.mutiplicador:.3f}"
+        self.multiplicador = multiplicador
+        self.damage = damage
         self.tears = tears
         self.shotSpd = shotSpd
         self.rango = rango
