@@ -6,6 +6,11 @@ from math import sqrt
 
 class Application(Frame):
     def __init__(self, master):
+        #Variables
+        self.total_damage_ups = 0
+        self.flat_damage = 0
+        self.lista_items_conseguidos = []
+
         self.personaje_selection=StringVar()
         self.frame_personaje_status=Frame(master)
         self.frame_personaje_status.grid()   
@@ -13,12 +18,12 @@ class Application(Frame):
         self.chara_label=Label(self.frame_personaje_status, text="Personaje:")
         self.chara_label.grid(row=1, column=0, sticky="W")
 
+        self.cuadro_nombre=Entry(self.frame_personaje_status, textvariable=self.personaje_selection)
+        self.cuadro_nombre.grid(row=1, column=1)
+
         self.imagen_personaje= PhotoImage(file="charas\Lost.png")
         self.label_image =Label(self.frame_personaje_status, image=self.imagen_personaje)
         self.label_image.grid(row=2, column=0, columnspan=2, rowspan=6, pady=5)
-
-        self.cuadro_nombre=Entry(self.frame_personaje_status, textvariable=self.personaje_selection)
-        self.cuadro_nombre.grid(row=1, column=1)
 
         #Label y Entry stats-------------------
         self.vida=IntVar(value=0)
@@ -70,9 +75,6 @@ class Application(Frame):
         self.frame_botones_item=Frame(master)
         self.frame_botones_item.grid(column=0, row=7, columnspan=2)
 
-        self.total_damage_ups = 0
-        self.flat_damage = 0
-
         self.row_contador = 0
         column_contador = 5
         self.botones_item=[]
@@ -87,6 +89,7 @@ class Application(Frame):
 
     #Metodos-------------------
 
+    #Metodo para los radiales, setea los stats iniciales del personaje elegido
     def elegir_personaje(self, personaje_elegido):
         self.personaje_selection.set(personaje_elegido.nombre)
         contador=0
@@ -99,11 +102,14 @@ class Application(Frame):
 
         self.total_damage_ups = 0
         self.flat_damage = 0
+        self.lista_items_conseguidos = []
 
 
-
+    #Metodo para los botones, itera el item recibido de la bibliotaca Items.py y asigna los cambios a cada stat
     def stat_up(self, item):
         personaje_elegido = self.personajes_lista[(self.personaje.get())-1]
+        self.lista_items_conseguidos.append(items[item]["nombre"])
+        print(self.lista_items_conseguidos)
         for stat in items[item]:
             if stat == "flat":
                 self.flat_damage = items[item][stat]
@@ -121,23 +127,30 @@ class Application(Frame):
                 else:
                     self.valor.set(f"{cambio:.3f}")
         self.comprobacion_max_min()
-                
+
+    #Comprueba que los stats no sobrepasen el maximo o esten debajo del minimo.     
     def comprobacion_max_min(self):
+        
+        #Max/Min vida
         if self.vida.get() > 12:
             self.vida.set(12)
         if self.vida.get() < 0:
             self.vida.set(0)
+        #Max tears
         if self.tears.get() > 120:
             self.tears.set(120)
+        #Min shot speed
         if self.shotSpd.get() < 0.6:
             self.shotSpd.set(0.6)
+        #Min rango
         if self.rango.get() < 1.0:
             self.rango.set(1.0)
+        #Max/Min speed
         if self.speed.get() > 2.0:
             self.speed.set(2.0)
         if self.speed.get() < 0.1:
             self.speed.set(0.1)
-#["vidax","damageinf","tearsx","shotSpdx","rangox","speedx","luck"]
+
 #Main-------------------
 root=Tk()
 root.title("CalculaIssac")

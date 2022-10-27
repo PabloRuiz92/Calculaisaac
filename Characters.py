@@ -106,6 +106,3 @@ Samson=Character("Samson",
                     1.10,
                     0,
                     "charas\Isaac.png")
-
-#Isaac.stat_up(dinner)
-#print(Isaac.damage)
